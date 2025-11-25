@@ -20,7 +20,7 @@ public class InventoryDao {
     }
 
     public InventoryItem create(InventoryItem item) {
-        String sql = "INSERT INTO inventory_items (type, location, serial_number, description, redistributable) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO devices (type, location, serial_number, description, redistributable) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = databaseClient.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getType());
@@ -42,7 +42,7 @@ public class InventoryDao {
     }
 
     public Optional<InventoryItem> findById(long id) {
-        String sql = "SELECT id, type, location, serial_number, description, redistributable FROM inventory_items WHERE id = ?";
+        String sql = "SELECT id, type, location, serial_number, description, redistributable FROM devices WHERE id = ?";
         try (Connection connection = databaseClient.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
@@ -62,7 +62,7 @@ public class InventoryDao {
     }
 
     public List<InventoryItem> findFiltered(String serialQuery, Boolean redistributable) {
-        StringBuilder sql = new StringBuilder("SELECT id, type, location, serial_number, description, redistributable FROM inventory_items");
+        StringBuilder sql = new StringBuilder("SELECT id, type, location, serial_number, description, redistributable FROM devices");
         List<Object> params = new ArrayList<>();
         List<String> clauses = new ArrayList<>();
 
@@ -104,7 +104,7 @@ public class InventoryDao {
             throw new IllegalArgumentException("Cannot update item without an id");
         }
 
-        String sql = "UPDATE inventory_items SET type = ?, location = ?, serial_number = ?, description = ?, redistributable = ? WHERE id = ?";
+        String sql = "UPDATE devices SET type = ?, location = ?, serial_number = ?, description = ?, redistributable = ? WHERE id = ?";
         try (Connection connection = databaseClient.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, item.getType());
@@ -120,7 +120,7 @@ public class InventoryDao {
     }
 
     public boolean delete(long id) {
-        String sql = "DELETE FROM inventory_items WHERE id = ?";
+        String sql = "DELETE FROM devices WHERE id = ?";
         try (Connection connection = databaseClient.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);

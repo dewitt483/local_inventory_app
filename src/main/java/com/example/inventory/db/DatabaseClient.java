@@ -45,14 +45,14 @@ public class DatabaseClient {
     }
 
     public void initializeSchema() {
-        String dropTable = "DROP TABLE IF EXISTS inventory_items";
-        String ddl = "CREATE TABLE IF NOT EXISTS inventory_items (" +
+        String dropTable = "DROP TABLE IF EXISTS devices";
+        String ddl = "CREATE TABLE IF NOT EXISTS devices (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "type TEXT NOT NULL, " +
                 "location TEXT NOT NULL, " +
-                "serial_number TEXT NOT NULL, " +
+                "serial_number TEXT NOT NULL UNIQUE, " +
                 "description TEXT, " +
-                "redistributable INTEGER NOT NULL CHECK (redistributable IN (0,1))" +
+                "redistributable INTEGER NOT NULL DEFAULT 0 CHECK (redistributable IN (0,1))" +
                 ")";
 
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
