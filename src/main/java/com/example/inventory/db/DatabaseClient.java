@@ -46,12 +46,12 @@ public class DatabaseClient {
 
     public void initializeSchema() {
         String ddl = "CREATE TABLE IF NOT EXISTS devices (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
                 "type TEXT NOT NULL, " +
                 "location TEXT NOT NULL, " +
                 "serial_number TEXT NOT NULL UNIQUE, " +
                 "description TEXT, " +
-                "redistributable INTEGER NOT NULL DEFAULT 0 CHECK (redistributable IN (0,1))" +
+                "redistributable BOOLEAN NOT NULL DEFAULT FALSE" +
                 ")";
 
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {

@@ -27,7 +27,7 @@ public class InventoryDao {
             statement.setString(2, item.getLocation());
             statement.setString(3, item.getSerialNumber());
             statement.setString(4, item.getDescription());
-            statement.setInt(5, item.isRedistributable() ? 1 : 0);
+            statement.setBoolean(5, item.isRedistributable());
             statement.executeUpdate();
 
             try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -73,7 +73,7 @@ public class InventoryDao {
 
         if (redistributable != null) {
             clauses.add("redistributable = ?");
-            params.add(redistributable ? 1 : 0);
+            params.add(redistributable);
         }
 
         if (!clauses.isEmpty()) {
@@ -111,7 +111,7 @@ public class InventoryDao {
             statement.setString(2, item.getLocation());
             statement.setString(3, item.getSerialNumber());
             statement.setString(4, item.getDescription());
-            statement.setInt(5, item.isRedistributable() ? 1 : 0);
+            statement.setBoolean(5, item.isRedistributable());
             statement.setLong(6, item.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -136,7 +136,7 @@ public class InventoryDao {
         String location = rs.getString("location");
         String serialNumber = rs.getString("serial_number");
         String description = rs.getString("description");
-        boolean redistributable = rs.getInt("redistributable") == 1;
+        boolean redistributable = rs.getBoolean("redistributable");
         return new InventoryItem(id, type, location, serialNumber, description, redistributable);
     }
 }
