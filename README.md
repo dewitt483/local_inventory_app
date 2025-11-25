@@ -30,11 +30,18 @@ Database configuration is read from `src/main/resources/application.properties`:
 
 ### Database initialization and seed data
 
-- On startup the app creates the `inventory_items` table if it does not exist and stores data in the SQLite file referenced by `db.url`.
-- If the table is empty, two sample rows are inserted automatically:
-  - `Sample Widget` (quantity 10, description "Starter inventory item")
-  - `Refill Kit` (quantity 5, description "Example secondary item")
-- No external migration tool is required; schema creation and seed insertion run every launch before the UI appears.
+- On startup the app **drops and recreates** the `devices` table every launch using the SQLite file referenced by `db.url`.
+- The `devices` table columns are:
+  - `id` (autoincrementing primary key)
+  - `type` (required text)
+  - `location` (required text)
+  - `serial_number` (required unique text)
+  - `description` (optional text)
+  - `redistributable` (required boolean stored as `0`/`1`)
+- After the schema reset, two sample rows are inserted automatically:
+  - `Laptop` (location "HQ Storage", serial `ABC12345`, description "Starter inventory item", redistributable)
+  - `Router` (location "IT Closet", serial `RTR-9988`, description "Example secondary item", not redistributable)
+- No external migration tool is required; schema recreation and seed insertion run every launch before the UI appears.
 
 ### Development tips
 
