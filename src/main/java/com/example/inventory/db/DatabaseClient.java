@@ -45,7 +45,6 @@ public class DatabaseClient {
     }
 
     public void initializeSchema() {
-        String dropTable = "DROP TABLE IF EXISTS devices";
         String ddl = "CREATE TABLE IF NOT EXISTS devices (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "type TEXT NOT NULL, " +
@@ -56,7 +55,6 @@ public class DatabaseClient {
                 ")";
 
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
-            statement.executeUpdate(dropTable);
             statement.executeUpdate(ddl);
         } catch (SQLException e) {
             throw new IllegalStateException("Unable to initialize database schema", e);
