@@ -3,11 +3,8 @@ package com.example.inventory;
 import com.example.inventory.dao.InventoryDao;
 import com.example.inventory.db.DatabaseClient;
 import com.example.inventory.model.InventoryItem;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import com.example.inventory.ui.InventoryFrame;
 import javax.swing.SwingUtilities;
-import java.awt.BorderLayout;
-import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -20,18 +17,7 @@ public class App {
         InventoryDao inventoryDao = new InventoryDao(databaseClient);
 
         ensureSampleData(inventoryDao);
-        List<InventoryItem> items = inventoryDao.findAll();
-
-        JFrame frame = new JFrame("Inventory App");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-
-        String message = "Inventory app connected to database. Items in stock: " + items.size();
-        JLabel label = new JLabel(message, JLabel.CENTER);
-        frame.add(label, BorderLayout.CENTER);
-
-        frame.setSize(480, 320);
-        frame.setLocationRelativeTo(null);
+        InventoryFrame frame = new InventoryFrame(inventoryDao);
         frame.setVisible(true);
     }
 
