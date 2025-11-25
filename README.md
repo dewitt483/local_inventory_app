@@ -1,19 +1,43 @@
 # Local Inventory App
 
-A minimal Swing-based desktop client for tracking inventory items backed by a local SQLite database.
+A minimal Swing-based desktop client for tracking inventory items backed by a Postgres database.
 
 ## Prerequisites
 
 - Java 17 or later
 - Maven 3.8+ for build/run tasks
-- SQLite available on your system (no server required; the application writes a local `inventory.db` file)
+- Docker (to run Postgres locally with `docker-compose`)
 
 ## Configuration
 
 Database configuration is read from `src/main/resources/application.properties`:
 
-- `db.url` (default: `jdbc:sqlite:inventory.db`): JDBC connection string for the SQLite database file. Change the filename or absolute path to relocate the data file.
-- `db.user` / `db.password`: Optional credentials for alternate JDBC URLs. These are ignored for the default SQLite configuration.
+- `db.url` (default: `jdbc:postgresql://localhost:5432/inventory`): JDBC connection string for the Postgres instance.
+- `db.user` / `db.password`: Credentials for the target Postgres database (default `inventory` / `inventory`).
+
+You can spin up a compatible local database with Docker using the provided compose snippet:
+
+```yaml
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: inventory
+      POSTGRES_PASSWORD: inventory
+      POSTGRES_DB: inventory
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+volumes:
+  dbdata:
+```
+
+Launch it with:
+
+```bash
+docker-compose up -d db
+```
 
 ## Setup and Running
 
@@ -22,7 +46,8 @@ Database configuration is read from `src/main/resources/application.properties`:
    ```bash
    mvn clean package
    ```
-3. Run the GUI:
+3. Ensure Postgres is running (see the Docker instructions above).
+4. Run the GUI:
    ```bash
    mvn exec:java
    ```
@@ -30,16 +55,14 @@ Database configuration is read from `src/main/resources/application.properties`:
 
 ### Database initialization and seed data
 
-- On startup the app creates the `inventory_items` table if it does not exist and stores data in the SQLite file referenced by `db.url`.
-- If the table is empty, two sample rows are inserted automatically:
-  - `Sample Widget` (quantity 10, description "Starter inventory item")
-  - `Refill Kit` (quantity 5, description "Example secondary item")
-- No external migration tool is required; schema creation and seed insertion run every launch before the UI appears.
+- On startup the app creates the `devices` table if it does not exist.
+- Columns: `id` (identity primary key), `type` (text), `location` (text), `serial_number` (text, unique), `description` (text), and `redistributable` (boolean).
+- No seed data is inserted automatically; your entries persist in Postgres thanks to the bound `dbdata` volume.
 
 ### Development tips
 
 - Refresh the table with the **Refresh** button if you modify data outside the UI.
-- To reset the database during local development, delete the `inventory.db` file (or point `db.url` at a new filename) and restart the app to recreate the schema and seed data.
+- To reset the database during local development, stop the container and remove the `dbdata` volume (`docker-compose down -v`) so Postgres starts with a clean schema.
 
 ## Screenshot
 
