@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InventoryTableModel extends AbstractTableModel {
     private final List<InventoryItem> items = new ArrayList<>();
-    private final String[] columns = {"ID", "Name", "Quantity", "Description"};
+    private final String[] columns = {"ID", "Type", "Location", "Serial Number", "Description", "Redistributable"};
 
     public void setItems(List<InventoryItem> newItems) {
         items.clear();
@@ -45,9 +45,11 @@ public class InventoryTableModel extends AbstractTableModel {
         InventoryItem item = items.get(rowIndex);
         return switch (columnIndex) {
             case 0 -> item.getId();
-            case 1 -> item.getName();
-            case 2 -> item.getQuantity();
-            case 3 -> item.getDescription();
+            case 1 -> item.getType();
+            case 2 -> item.getLocation();
+            case 3 -> item.getSerialNumber();
+            case 4 -> item.getDescription();
+            case 5 -> item.isRedistributable() ? "Yes" : "No";
             default -> "";
         };
     }

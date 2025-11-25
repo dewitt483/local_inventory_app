@@ -4,19 +4,23 @@ import java.util.Objects;
 
 public class InventoryItem {
     private Long id;
-    private String name;
-    private int quantity;
+    private String type;
+    private String location;
+    private String serialNumber;
     private String description;
+    private boolean redistributable;
 
-    public InventoryItem(Long id, String name, int quantity, String description) {
+    public InventoryItem(Long id, String type, String location, String serialNumber, String description, boolean redistributable) {
         this.id = id;
-        this.name = name;
-        this.quantity = quantity;
+        this.type = type;
+        this.location = location;
+        this.serialNumber = serialNumber;
         this.description = description;
+        this.redistributable = redistributable;
     }
 
-    public InventoryItem(String name, int quantity, String description) {
-        this(null, name, quantity, description);
+    public InventoryItem(String type, String location, String serialNumber, String description, boolean redistributable) {
+        this(null, type, location, serialNumber, description, redistributable);
     }
 
     public Long getId() {
@@ -27,20 +31,28 @@ public class InventoryItem {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getLocation() {
+        return location;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getDescription() {
@@ -51,26 +63,36 @@ public class InventoryItem {
         this.description = description;
     }
 
+    public boolean isRedistributable() {
+        return redistributable;
+    }
+
+    public void setRedistributable(boolean redistributable) {
+        this.redistributable = redistributable;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InventoryItem that = (InventoryItem) o;
-        return quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
+        return redistributable == that.redistributable && Objects.equals(id, that.id) && Objects.equals(type, that.type) && Objects.equals(location, that.location) && Objects.equals(serialNumber, that.serialNumber) && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, quantity, description);
+        return Objects.hash(id, type, location, serialNumber, description, redistributable);
     }
 
     @Override
     public String toString() {
         return "InventoryItem{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", quantity=" + quantity +
+                ", type='" + type + '\'' +
+                ", location='" + location + '\'' +
+                ", serialNumber='" + serialNumber + '\'' +
                 ", description='" + description + '\'' +
+                ", redistributable=" + redistributable +
                 '}';
     }
 }

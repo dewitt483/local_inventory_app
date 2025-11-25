@@ -26,7 +26,7 @@ public class App {
             return;
         }
 
-        inventoryDao.create(new InventoryItem("Sample Widget", 10, "Starter inventory item"));
-        inventoryDao.create(new InventoryItem("Refill Kit", 5, "Example secondary item"));
+        inventoryDao.create(new InventoryItem("Laptop", "HQ Storage", "ABC12345", "Starter inventory item", true));
+        inventoryDao.create(new InventoryItem("Router", "IT Closet", "RTR-9988", "Example secondary item", false));
     }
 }
